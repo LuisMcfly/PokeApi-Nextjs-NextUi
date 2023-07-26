@@ -17,28 +17,28 @@ interface Props {
 const PokemonByNamePage: NextPage<Props> = ({ pokemon }) => {
 
     const [isInFavorites, setIsInFavorites] = useState(false)
-  
-    const onToggleFavorite = () => {
-      localFavorites.toggleFavorite(pokemon.id)
-      setIsInFavorites(!isInFavorites)
 
-      if( !isInFavorites ) {
-        confetti({
-          zIndex: 999,
-          particleCount: 100,
-          spread: 160,
-          angle: -100,
-          origin: {
-            x: 1,
-            y: 0 
-          }
-        })
-      }
+    const onToggleFavorite = () => {
+        localFavorites.toggleFavorite(pokemon.id)
+        setIsInFavorites(!isInFavorites)
+
+        if (!isInFavorites) {
+            confetti({
+                zIndex: 999,
+                particleCount: 100,
+                spread: 160,
+                angle: -100,
+                origin: {
+                    x: 1,
+                    y: 0
+                }
+            })
+        }
     }
-  
+
     useEffect(() => {
-      setIsInFavorites(localFavorites.existInFavorites(pokemon.id))
-    }, [pokemon.id]) 
+        setIsInFavorites(localFavorites.existInFavorites(pokemon.id))
+    }, [pokemon.id])
 
 
 
@@ -124,17 +124,30 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
         paths: pokemons151.map(name => ({
             params: { name }
         })),
-        fallback: false
+        fallback: 'blocking'
     }
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     const { name } = params as { name: string };
+    const DataLowerCase = name.toLowerCase();
+    
+    const pokemon = await getPokemonInfo(DataLowerCase)
+
+    if (!pokemon) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
 
     return {
         props: {
-            pokemon: await getPokemonInfo(name)
-        }
+            pokemon
+        },
+        revalidate: 86400,
     }
 }
 
