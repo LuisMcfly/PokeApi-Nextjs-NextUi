@@ -8,23 +8,29 @@ type Props = {
   title?: string
 }
 
+const origin = (typeof window === 'undefined') ? '' : window.location.origin;
+
 export const Layout = ({ children, title }: Props) => {
   return (
     <>
-        <Head>
-            <title>{ title || 'PokemonApp'}</title>
-            <meta name="author" content="Luis Ruiz"/>
-            <meta name="description" content={`Información sobre el pokémon ${title}`}/>
-            <meta name="keywords" content={`${title}, pokemon, pokedex`}/>
-        </Head>
+      <Head>
+        <title>{title || 'PokemonApp'}</title>
+        <meta name="author" content="Luis Ruiz" />
+        <meta name="description" content={`Información sobre el pokémon ${title}`} />
+        <meta name="keywords" content={`${title}, pokemon, pokedex`} />
 
-        <Navbar />
+        <meta property="og:title" content={`Información sobre ${title}`} />
+        <meta property="og:description" content={`esta es la página sobre ${ title }`} />
+        <meta property="og:image" content={`${origin}/banner.png`} />
+      </Head>
 
-        <main style={{
-          padding: '0px 20px'
-        }}>
-            { children }
-        </main>
+      <Navbar />
+
+      <main style={{
+        padding: '0px 20px'
+      }}>
+        {children}
+      </main>
     </>
   )
 }
