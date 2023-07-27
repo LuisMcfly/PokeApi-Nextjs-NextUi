@@ -1,5 +1,5 @@
 This is a [Next.js](https://nextjs.org/)
-## deploy [Vercel](https://nextjs.org/](https://poke-api-nextjs-next-ui.vercel.app/)
+## deploy [Vercel](https://poke-api-nextjs-next-ui.vercel.app/)
 
 ## Getting Started
 
